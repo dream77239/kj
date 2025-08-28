@@ -25,3 +25,17 @@ for _, fn in next, getgc(true) do
         end
     end
 end
+hookValidationFunction("validateCollisions")
+hookValidationFunction("validateMovement")
+hookValidationFunction("validateVelocity")
+for i, fn in next, getgc(true) do
+    if type(fn) == "function" then
+        local info = debug.getinfo(fn)
+        if info and info.name and info.name:lower():find("customvalidation") then
+            hookfunction(fn, function(...)
+                return true
+            end)
+            print("Hooked CustomValidation -> always true")
+        end
+    end
+end
